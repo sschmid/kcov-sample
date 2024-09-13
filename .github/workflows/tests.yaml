@@ -20,3 +20,16 @@ jobs:
 
       - name: "Run Test"
         run: test/bats/bin/bats --tap test
+
+      - name: "Test Coverage"
+        run: |
+          kcov \
+            --include-path=src \
+            ${{ github.workspace }}/coverage \
+            test/bats/bin/bats --tap test
+
+      - name: "Upload Coverage Report"
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ github.event.repository.name }} Coverage Report
+          path: coverage
