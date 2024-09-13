@@ -8,32 +8,37 @@ on:
 
 jobs:
   test:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
         uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: "Install Dependencies"
-        run: brew install bash
-
       - name: "Run Tests"
         run: test/bats/bin/bats --tap test
 
       - name: "Make kcov"
         run: |
-          brew install cmake ninja wget openssl zlib dwarfutils
-          git clone https://github.com/SimonKagstrom/kcov.git
+          sudo apt-get update && sudo apt-get install -y \
+            binutils-dev \
+            libssl-dev \
+            libcurl4-openssl-dev \
+            libelf-dev \
+            libstdc++-12-dev \
+            zlib1g-dev \
+            libdw-dev \
+            libiberty-dev
+          git clone https://github.com/SimonKagstrom/kcov.git kcov
           cd kcov
           mkdir build
           cd build
-          cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR=$(brew --prefix openssl) ..
-          ninja
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          sudo make install
 
       - name: "Test Coverage"
         run: |
-          kcov/build/src/kcov \
+          kcov \
             --include-path=src \
             ${{ github.workspace }}/coverage \
             test/bats/bin/bats --tap test
