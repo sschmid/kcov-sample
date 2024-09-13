@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if (($#))
+then echo "args: $*"  # this line should be covered
+else echo "no args"   # this line should NOT be covered
+fi
