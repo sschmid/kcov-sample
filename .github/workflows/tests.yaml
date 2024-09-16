@@ -24,6 +24,7 @@ jobs:
       - name: "Test Coverage"
         run: |
           kcov \
+            --bash-method=DEBUG \
             --include-path=src \
             ${{ github.workspace }}/coverage \
             test/bats/bin/bats --tap test
