@@ -24,7 +24,6 @@ jobs:
       - name: "Test Coverage"
         run: |
           kcov \
-            --debug-force-bash-stderr \
             --include-path=src \
             ${{ github.workspace }}/coverage \
             test/bats/bin/bats --tap test
