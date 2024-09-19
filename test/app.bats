@@ -7,6 +7,7 @@
 }
 
 @test "prints args" {
+  cd "${BATS_TEST_TMPDIR}"
   run app test
   assert_success
   assert_output "args: test"
