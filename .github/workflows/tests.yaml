@@ -51,7 +51,6 @@ jobs:
         run: |
           kcov \
             --bash-parser="$(which bash)" \
-            --include-path=src \
             coverage \
             test/bats/bin/bats --tap test
 
